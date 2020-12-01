@@ -8,9 +8,9 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
 			// if (!userNum) {
 			// 	return res.status(401).json({ status: "fail", message: "유저 정보가 없습니다" });
 			// }
-			// const user = await User.findByEmail(1);
+			const user = await User.findByEmail(1);
 
-			res.status(200).json({ status: "success", payload: { hello: "world" } });
+			res.status(200).json({ status: "success", payload: user });
 		} catch (err) {
 			res.status(500).json({ status: "error", message: "데이터베이스 오류" });
 		}

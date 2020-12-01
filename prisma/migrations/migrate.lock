@@ -1,3 +1,6 @@
 # Prisma Migrate lockfile v1
 
 20201129151735-init
+20201201123610-post-add-image
+20201201123903-delete-content
+20201201124024-password-add

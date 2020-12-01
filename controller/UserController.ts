@@ -8,6 +8,7 @@ export const findByEmail = async (id: number) => {
 				id: id,
 			},
 		});
+
 		return user;
 	} catch (err) {
 		throw err;

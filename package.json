@@ -1,27 +1,41 @@
 {
-  "name": "with-typescript",
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start",
-    "type-check": "tsc"
-  },
-  "dependencies": {
-    "@prisma/cli": "^2.12.1",
-    "@prisma/client": "^2.12.1",
-    "@types/axios": "^0.14.0",
-    "@types/next": "^9.0.0",
-    "axios": "^0.21.0",
-    "next": "^10.0.3",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
-  },
-  "devDependencies": {
-    "@types/node": "^12.12.21",
-    "@types/react": "^16.9.16",
-    "@types/react-dom": "^16.9.4",
-    "typescript": "4.0"
-  },
-  "license": "MIT"
+	"name": "with-typescript",
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "next",
+		"build": "next build",
+		"start": "next start",
+		"type-check": "tsc",
+		"migrate-save": "prisma migrate save --experimental",
+		"migrate-up": "prisma migrate up --experimental",
+		"generate-prisma": "prisma introspect | prisma generate",
+		"generate": "npm -s run generate:prisma && npm -s run generate:nexus",
+		"generate:prisma": "prisma generate",
+		"generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api"
+	},
+	"dependencies": {
+		"@nexus/schema": "^0.19.2",
+		"@prisma/cli": "^2.12.1",
+		"@prisma/client": "^2.12.1",
+		"@types/axios": "^0.14.0",
+		"@types/graphql-iso-date": "^3.4.0",
+		"@types/next": "^9.0.0",
+		"apollo-server": "^2.19.0",
+		"apollo-server-micro": "^2.19.0",
+		"axios": "^0.21.0",
+		"graphql": "^15.4.0",
+		"graphql-iso-date": "^3.6.1",
+		"next": "^10.0.3",
+		"nexus-plugin-prisma": "^0.25.0",
+		"react": "^16.12.0",
+		"react-dom": "^16.12.0",
+		"ts-node": "^9.0.0"
+	},
+	"devDependencies": {
+		"@types/node": "^12.12.21",
+		"@types/react": "^16.9.16",
+		"@types/react-dom": "^16.9.4",
+		"typescript": "4.0"
+	},
+	"license": "MIT"
 }
