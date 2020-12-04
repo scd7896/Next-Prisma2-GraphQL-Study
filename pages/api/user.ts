@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { User } from "controller";
+import { UserController } from "controller";
 
 const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
 	if (_req.method === "GET") {
@@ -8,7 +8,7 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
 			// if (!userNum) {
 			// 	return res.status(401).json({ status: "fail", message: "유저 정보가 없습니다" });
 			// }
-			const user = await User.findByEmail(1);
+			const user = await UserController.findByEmail(1);
 
 			res.status(200).json({ status: "success", payload: user });
 		} catch (err) {
@@ -18,7 +18,7 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
 
 	if (_req.method === "POST") {
 		try {
-			const user = await User.userPost({ ..._req.body });
+			const user = await UserController.userPost({ ..._req.body });
 			res.status(200).json({ status: "success", payload: user });
 		} catch (err) {
 			console.log(err);

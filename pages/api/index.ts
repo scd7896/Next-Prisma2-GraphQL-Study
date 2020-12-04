@@ -1,41 +1,14 @@
-import { makeSchema, objectType, stringArg, asNexusMethod } from "@nexus/schema";
-import { GraphQLDate } from "graphql-iso-date";
-import { PrismaClient } from "@prisma/client";
+import { makeSchema } from "@nexus/schema";
 import { ApolloServer } from "apollo-server-micro";
+import { nexusSchemaPrisma } from "nexus-plugin-prisma/schema";
 import path from "path";
-
-export const GQLDate = asNexusMethod(GraphQLDate, "date");
-
+import { types } from "../../models";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-const Query = objectType({
-	name: "Query",
-	definition(t) {
-		t.int("test");
-		t.field("User", {
-			type: "User",
-			resolve: () => {
-				return prisma.user.findUnique({
-					where: {
-						id: 1,
-					},
-				});
-			},
-		});
-	},
-});
-
-const User = objectType({
-	name: "User",
-	definition(t) {
-		t.int("id");
-		t.string("name");
-		t.string("email");
-		t.string("password");
-	},
-});
 
 export const schema = makeSchema({
-	types: [Query, User, GQLDate],
+	types: types,
+	plugins: [nexusSchemaPrisma({ experimentalCRUD: true })],
 	outputs: {
 		typegen: path.join(process.cwd(), "pages", "api", "nexus-typegen.ts"),
 		schema: path.join(process.cwd(), "pages", "api", "schema.graphql"),
@@ -48,6 +21,6 @@ export const config = {
 	},
 };
 
-export default new ApolloServer({ schema }).createHandler({
+export default new ApolloServer({ schema, context: (ctx) => ({ ...ctx, prisma }) }).createHandler({
 	path: "/api",
 });

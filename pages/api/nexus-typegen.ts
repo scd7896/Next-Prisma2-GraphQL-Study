@@ -4,24 +4,15 @@
  */
 
 
-import { core } from "@nexus/schema"
-declare global {
-  interface NexusGenCustomInputMethods<TypeName extends string> {
-    /**
-     * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-     */
-    date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "Date";
-  }
-}
-declare global {
-  interface NexusGenCustomOutputMethods<TypeName extends string> {
-    /**
-     * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-     */
-    date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Date";
-  }
-}
 
+
+
+declare global {
+  interface NexusGenCustomOutputProperties<TypeName extends string> {
+    crud: NexusPrisma<TypeName, 'crud'>
+    model: NexusPrisma<TypeName, 'model'>
+  }
+}
 
 declare global {
   interface NexusGen extends NexusGenTypes {}
@@ -39,14 +30,27 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
-  Date: any
 }
 
 export interface NexusGenObjects {
+  Post: { // root type
+    authorId: number; // Int!
+    description?: string | null; // String
+    id: number; // Int!
+    image?: string | null; // String
+    published: boolean; // Boolean!
+    title: string; // String!
+  }
+  Profile: { // root type
+    bio?: string | null; // String
+    id: number; // Int!
+    published: boolean; // Boolean!
+    userId: number; // Int!
+  }
   Query: {};
   User: { // root type
-    email?: string | null; // String
-    id?: number | null; // Int
+    email: string; // String!
+    id: number; // Int!
     name?: string | null; // String
     password?: string | null; // String
   }
@@ -63,28 +67,62 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Post: { // field return type
+    author: NexusGenRootTypes['User']; // User!
+    authorId: number; // Int!
+    description: string | null; // String
+    id: number; // Int!
+    image: string | null; // String
+    published: boolean; // Boolean!
+    title: string; // String!
+  }
+  Profile: { // field return type
+    bio: string | null; // String
+    id: number; // Int!
+    published: boolean; // Boolean!
+    User: NexusGenRootTypes['User']; // User!
+    userId: number; // Int!
+  }
   Query: { // field return type
-    test: number | null; // Int
-    User: NexusGenRootTypes['User'] | null; // User
+    posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
   }
   User: { // field return type
-    email: string | null; // String
-    id: number | null; // Int
+    email: string; // String!
+    id: number; // Int!
     name: string | null; // String
     password: string | null; // String
+    posts: NexusGenRootTypes['Post'][]; // [Post!]!
+    profile: NexusGenRootTypes['Profile'] | null; // Profile
   }
 }
 
 export interface NexusGenFieldTypeNames {
-  Query: { // field return type name
-    test: 'Int'
+  Post: { // field return type name
+    author: 'User'
+    authorId: 'Int'
+    description: 'String'
+    id: 'Int'
+    image: 'String'
+    published: 'Boolean'
+    title: 'String'
+  }
+  Profile: { // field return type name
+    bio: 'String'
+    id: 'Int'
+    published: 'Boolean'
     User: 'User'
+    userId: 'Int'
+  }
+  Query: { // field return type name
+    posts: 'Post'
   }
   User: { // field return type name
     email: 'String'
     id: 'Int'
     name: 'String'
     password: 'String'
+    posts: 'Post'
+    profile: 'Profile'
   }
 }
 
@@ -151,11 +189,71 @@ declare global {
   interface NexusGenPluginTypeConfig<TypeName extends string> {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
+    /**
+     * Whether the type can be null
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    nullable?: boolean
+    /**
+     * Whether the type is list of values, or just a single value.
+     * If list is true, we assume the type is a list. If list is an array,
+     * we'll assume that it's a list with the depth. The boolean indicates whether
+     * the type is required (non-null), where true = nonNull, false = nullable.
+     * @see declarativeWrappingPlugin
+     */
+    list?: true | boolean[]
+    /**
+     * Whether the type should be non null, `required: true` = `nullable: false`
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    required?: boolean
   }
   interface NexusGenPluginInputFieldConfig<TypeName extends string, FieldName extends string> {
+    /**
+     * Whether the type can be null
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    nullable?: boolean
+    /**
+     * Whether the type is list of values, or just a single value.
+     * If list is true, we assume the type is a list. If list is an array,
+     * we'll assume that it's a list with the depth. The boolean indicates whether
+     * the type is required (non-null), where true = nonNull, false = nullable.
+     * @see declarativeWrappingPlugin
+     */
+    list?: true | boolean[]
+    /**
+     * Whether the type should be non null, `required: true` = `nullable: false`
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    required?: boolean
   }
   interface NexusGenPluginSchemaConfig {
   }
   interface NexusGenPluginArgConfig {
+    /**
+     * Whether the type can be null
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    nullable?: boolean
+    /**
+     * Whether the type is list of values, or just a single value.
+     * If list is true, we assume the type is a list. If list is an array,
+     * we'll assume that it's a list with the depth. The boolean indicates whether
+     * the type is required (non-null), where true = nonNull, false = nullable.
+     * @see declarativeWrappingPlugin
+     */
+    list?: true | boolean[]
+    /**
+     * Whether the type should be non null, `required: true` = `nullable: false`
+     * @default (depends on whether nullability is configured in type or schema)
+     * @see declarativeWrappingPlugin
+     */
+    required?: boolean
   }
 }

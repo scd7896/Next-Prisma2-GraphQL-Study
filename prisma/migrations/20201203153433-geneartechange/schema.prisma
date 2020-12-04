@@ -4,18 +4,25 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
+}
+
+generator nexus_prisma {
+  provider = "nexus-prisma"
+}
+
+generator photon {
+  provider = "photonjs"
 }
 
 model Post {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  title       String
-  published   Boolean  @default(false)
-  authorId    Int
-  image       String?
-  description String?
-  author      User     @relation(fields: [authorId], references: [id])
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String
+  published Boolean  @default(false)
+  authorId  Int
+  image     String?
+  author    User     @relation(fields: [authorId], references: [id])
 }
 
 model Profile {
