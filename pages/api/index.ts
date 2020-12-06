@@ -3,11 +3,12 @@ import { ApolloServer } from "apollo-server-micro";
 import { nexusSchemaPrisma } from "nexus-plugin-prisma/schema";
 import path from "path";
 import { types } from "../../models";
+import { Query, Mutation } from "../../controller/index";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const schema = makeSchema({
-	types: types,
+	types: [...types, Query, Mutation],
 	plugins: [nexusSchemaPrisma({ experimentalCRUD: true })],
 	outputs: {
 		typegen: path.join(process.cwd(), "pages", "api", "nexus-typegen.ts"),
