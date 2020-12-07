@@ -1,5 +1,4 @@
-import { objectType } from "@nexus/schema";
-import { PrismaClient } from "@prisma/client";
+import { list, objectType } from "@nexus/schema";
 
 export const Post = objectType({
 	name: "Post",
@@ -11,5 +10,27 @@ export const Post = objectType({
 		t.model.authorId();
 		t.model.description();
 		t.model.author({ type: "User" });
+	},
+});
+
+export const JsendPost = objectType({
+	name: "JsendPost",
+	definition(t) {
+		t.string("status");
+		t.string("message");
+		t.field("payload", {
+			type: "Post",
+		});
+	},
+});
+
+export const JsendPostList = objectType({
+	name: "JsendPostList",
+	definition(t) {
+		t.string("status");
+		t.string("message");
+		t.field("payload", {
+			type: list("Post"),
+		});
 	},
 });

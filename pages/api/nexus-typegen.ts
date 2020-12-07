@@ -33,6 +33,17 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  JsendPost: { // root type
+    message?: string | null; // String
+    payload?: NexusGenRootTypes['Post'] | null; // Post
+    status?: string | null; // String
+  }
+  JsendPostList: { // root type
+    message?: string | null; // String
+    payload?: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
+    status?: string | null; // String
+  }
+  Mutation: {};
   Post: { // root type
     authorId: number; // Int!
     description?: string | null; // String
@@ -67,6 +78,20 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  JsendPost: { // field return type
+    message: string | null; // String
+    payload: NexusGenRootTypes['Post'] | null; // Post
+    status: string | null; // String
+  }
+  JsendPostList: { // field return type
+    message: string | null; // String
+    payload: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
+    status: string | null; // String
+  }
+  Mutation: { // field return type
+    addPosts: NexusGenRootTypes['JsendPost'] | null; // JsendPost
+    removePosts: NexusGenRootTypes['JsendPost'] | null; // JsendPost
+  }
   Post: { // field return type
     author: NexusGenRootTypes['User']; // User!
     authorId: number; // Int!
@@ -84,7 +109,7 @@ export interface NexusGenFieldTypes {
     userId: number; // Int!
   }
   Query: { // field return type
-    posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
+    posts: NexusGenRootTypes['JsendPostList'] | null; // JsendPostList
   }
   User: { // field return type
     email: string; // String!
@@ -97,6 +122,20 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  JsendPost: { // field return type name
+    message: 'String'
+    payload: 'Post'
+    status: 'String'
+  }
+  JsendPostList: { // field return type name
+    message: 'String'
+    payload: 'Post'
+    status: 'String'
+  }
+  Mutation: { // field return type name
+    addPosts: 'JsendPost'
+    removePosts: 'JsendPost'
+  }
   Post: { // field return type name
     author: 'User'
     authorId: 'Int'
@@ -114,7 +153,7 @@ export interface NexusGenFieldTypeNames {
     userId: 'Int'
   }
   Query: { // field return type name
-    posts: 'Post'
+    posts: 'JsendPostList'
   }
   User: { // field return type name
     email: 'String'
@@ -127,6 +166,17 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    addPosts: { // args
+      authorEmail: string; // String!
+      description?: string | null; // String
+      title: string; // String!
+    }
+    removePosts: { // args
+      authorEmail: string; // String!
+      id: number; // Int!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {

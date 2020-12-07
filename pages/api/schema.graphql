@@ -2,6 +2,23 @@
 ### Do not make changes to this file directly
 
 
+type JsendPost {
+  message: String
+  payload: Post
+  status: String
+}
+
+type JsendPostList {
+  message: String
+  payload: [Post]
+  status: String
+}
+
+type Mutation {
+  addPosts(authorEmail: String!, description: String, title: String!): JsendPost
+  removePosts(authorEmail: String!, id: Int!): JsendPost
+}
+
 type Post {
   author: User!
   authorId: Int!
@@ -21,7 +38,7 @@ type Profile {
 }
 
 type Query {
-  posts: [Post]
+  posts: JsendPostList
 }
 
 type User {

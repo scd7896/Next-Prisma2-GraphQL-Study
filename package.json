@@ -11,7 +11,7 @@
 		"generate": "npm run generate-prisma && npm -s run generate:prisma && npm -s run generate:nexus",
 		"generate-prisma": "prisma introspect",
 		"generate:prisma": "prisma generate",
-		"generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api"
+		"generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api/graphql"
 	},
 	"dependencies": {
 		"@nexus/schema": "^0.19.2",
