@@ -11,9 +11,11 @@
 		"generate": "npm run generate-prisma && npm -s run generate:prisma && npm -s run generate:nexus",
 		"generate-prisma": "prisma introspect",
 		"generate:prisma": "prisma generate",
-		"generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api/graphql"
+		"generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json pages/api/graphql",
+		"relay": "relay-compiler --src ./src --schema ./pages/api/schema.graphql --extensions js jsx"
 	},
 	"dependencies": {
+		"@apollo/client": "^3.3.4",
 		"@nexus/schema": "^0.19.2",
 		"@prisma/cli": "^2.12.1",
 		"@prisma/client": "^2.12.1",
@@ -29,12 +31,16 @@
 		"nexus-plugin-prisma": "^0.25.0",
 		"react": "^16.12.0",
 		"react-dom": "^16.12.0",
+		"react-relay": "^10.1.0",
 		"ts-node": "^9.0.0"
 	},
 	"devDependencies": {
 		"@types/node": "^12.12.21",
 		"@types/react": "^16.9.16",
 		"@types/react-dom": "^16.9.4",
+		"@types/react-relay": "^7.0.17",
+		"relay-compiler": "^10.1.1",
+		"relay-config": "^10.1.1",
 		"typescript": "4.0"
 	},
 	"license": "MIT"
