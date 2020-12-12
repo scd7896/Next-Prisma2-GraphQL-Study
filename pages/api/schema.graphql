@@ -38,7 +38,7 @@ type Profile {
 }
 
 type Query {
-  posts: JsendPostList
+  posts(id: Int!): JsendPostList
 }
 
 type User {

@@ -177,6 +177,11 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
   }
+  Query: {
+    posts: { // args
+      id: number; // Int!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {

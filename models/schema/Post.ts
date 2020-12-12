@@ -4,10 +4,13 @@ import { NexusContext } from "types";
 const queries = (t: ObjectDefinitionBlock<"Query">) => {
 	t.field("posts", {
 		type: "JsendPostList",
-		resolve: async (root, args, { prisma }: NexusContext) => {
+		args: {
+			id: intArg({ nullable: false }),
+		},
+		resolve: async (root, { id }, { prisma }: NexusContext) => {
 			const posts = await prisma.post.findMany({
 				where: {
-					id: { gt: 1 },
+					id: { gt: id },
 				},
 				include: {
 					author: {
