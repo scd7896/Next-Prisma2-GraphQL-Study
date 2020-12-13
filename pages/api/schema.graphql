@@ -16,7 +16,9 @@ type JsendPostList {
 
 type Mutation {
   addPosts(authorEmail: String!, description: String, title: String!): JsendPost
+  login(email: String!, password: String!): UserLogin
   removePosts(authorEmail: String!, id: Int!): JsendPost
+  signUp(email: String!, name: String!, password: String!, passwordCheck: String!): UserLogin
 }
 
 type Post {
@@ -38,6 +40,7 @@ type Profile {
 }
 
 type Query {
+  getMyData: UserLogin
   posts(id: Int!): JsendPostList
 }
 
@@ -48,4 +51,11 @@ type User {
   password: String
   posts: [Post!]!
   profile: Profile
+}
+
+type UserLogin {
+  message: String
+  payload: User
+  status: String
+  token: String
 }

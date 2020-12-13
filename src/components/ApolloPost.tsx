@@ -25,7 +25,7 @@ const ApolloPost = () => {
 	const { loading, error, data } = useQuery<{ posts: JsendSuccess<Post[]> }, PostQueryVar>(GET_POSTS, {
 		variables: { id: test },
 	});
-	if (loading) return <p>Loading...</p>;
+	if (loading) return <RowDiv>Loading...</RowDiv>;
 	if (error) return <p>error {error.message}</p>;
 
 	return (

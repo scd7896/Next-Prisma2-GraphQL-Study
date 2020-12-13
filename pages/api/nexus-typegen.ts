@@ -65,6 +65,12 @@ export interface NexusGenObjects {
     name?: string | null; // String
     password?: string | null; // String
   }
+  UserLogin: { // root type
+    message?: string | null; // String
+    payload?: NexusGenRootTypes['User'] | null; // User
+    status?: string | null; // String
+    token?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -90,7 +96,9 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     addPosts: NexusGenRootTypes['JsendPost'] | null; // JsendPost
+    login: NexusGenRootTypes['UserLogin'] | null; // UserLogin
     removePosts: NexusGenRootTypes['JsendPost'] | null; // JsendPost
+    signUp: NexusGenRootTypes['UserLogin'] | null; // UserLogin
   }
   Post: { // field return type
     author: NexusGenRootTypes['User']; // User!
@@ -109,6 +117,7 @@ export interface NexusGenFieldTypes {
     userId: number; // Int!
   }
   Query: { // field return type
+    getMyData: NexusGenRootTypes['UserLogin'] | null; // UserLogin
     posts: NexusGenRootTypes['JsendPostList'] | null; // JsendPostList
   }
   User: { // field return type
@@ -118,6 +127,12 @@ export interface NexusGenFieldTypes {
     password: string | null; // String
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
     profile: NexusGenRootTypes['Profile'] | null; // Profile
+  }
+  UserLogin: { // field return type
+    message: string | null; // String
+    payload: NexusGenRootTypes['User'] | null; // User
+    status: string | null; // String
+    token: string | null; // String
   }
 }
 
@@ -134,7 +149,9 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     addPosts: 'JsendPost'
+    login: 'UserLogin'
     removePosts: 'JsendPost'
+    signUp: 'UserLogin'
   }
   Post: { // field return type name
     author: 'User'
@@ -153,6 +170,7 @@ export interface NexusGenFieldTypeNames {
     userId: 'Int'
   }
   Query: { // field return type name
+    getMyData: 'UserLogin'
     posts: 'JsendPostList'
   }
   User: { // field return type name
@@ -163,6 +181,12 @@ export interface NexusGenFieldTypeNames {
     posts: 'Post'
     profile: 'Profile'
   }
+  UserLogin: { // field return type name
+    message: 'String'
+    payload: 'User'
+    status: 'String'
+    token: 'String'
+  }
 }
 
 export interface NexusGenArgTypes {
@@ -172,9 +196,19 @@ export interface NexusGenArgTypes {
       description?: string | null; // String
       title: string; // String!
     }
+    login: { // args
+      email: string; // String!
+      password: string; // String!
+    }
     removePosts: { // args
       authorEmail: string; // String!
       id: number; // Int!
+    }
+    signUp: { // args
+      email: string; // String!
+      name: string; // String!
+      password: string; // String!
+      passwordCheck: string; // String!
     }
   }
   Query: {

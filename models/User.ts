@@ -11,3 +11,15 @@ export const User = objectType({
 		t.model.profile({ type: "Profile" });
 	},
 });
+
+export const UserLogin = objectType({
+	name: "UserLogin",
+	definition(t) {
+		t.string("status");
+		t.string("token");
+		t.string("message");
+		t.field("payload", {
+			type: "User",
+		});
+	},
+});
