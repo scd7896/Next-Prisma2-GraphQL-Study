@@ -5,7 +5,9 @@
 			"utils/*": ["./utils/*"],
 			"pages/*": ["./pages/*"],
 			"controller/*": ["./controller/*"],
-			"models/*": ["./models/*"]
+			"models/*": ["./models/*"],
+			"hooks/*": ["./hooks/*"],
+			"component/*": ["./src/components/*"]
 		},
 		"allowJs": true,
 		"alwaysStrict": true,

@@ -11,7 +11,9 @@ export type User = {
 
 export interface JsendSuccess<T> {
 	status: "success";
+	message?: string;
 	payload: T;
 }
 
 export * from "./post";
+export * from "./user";
