@@ -192,7 +192,6 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     addPosts: { // args
-      authorEmail: string; // String!
       description?: string | null; // String
       title: string; // String!
     }
@@ -201,7 +200,6 @@ export interface NexusGenArgTypes {
       password: string; // String!
     }
     removePosts: { // args
-      authorEmail: string; // String!
       id: number; // Int!
     }
     signUp: { // args

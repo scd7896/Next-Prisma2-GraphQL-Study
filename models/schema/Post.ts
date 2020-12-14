@@ -7,7 +7,7 @@ const queries = (t: ObjectDefinitionBlock<"Query">) => {
 		args: {
 			id: intArg({ nullable: false }),
 		},
-		resolve: async (root, { id }, { prisma }: NexusContext) => {
+		resolve: async (_, { id }, { prisma }: NexusContext) => {
 			const posts = await prisma.post.findMany({
 				where: {
 					id: { gt: id },
@@ -32,10 +32,15 @@ const mutations = (t: ObjectDefinitionBlock<"Mutation">) => {
 	t.field("removePosts", {
 		type: "JsendPost",
 		args: {
-			authorEmail: nonNull(stringArg()),
 			id: nonNull(intArg()),
 		},
-		resolve: async (root, { authorEmail, id }, { prisma }: NexusContext) => {
+		resolve: async (_, { id }, { prisma, user }: NexusContext) => {
+			if (!user) {
+				return {
+					status: "fail",
+					message: "삭제 권한이 없습니다",
+				};
+			}
 			const target = await prisma.post.findUnique({ where: { id }, include: { author: true } });
 			if (!target)
 				return {
@@ -43,7 +48,7 @@ const mutations = (t: ObjectDefinitionBlock<"Mutation">) => {
 					message: "해당 포스트는 없습니다.",
 				};
 
-			if (target.author.email !== authorEmail)
+			if (target.author.email !== user.email)
 				return {
 					status: "fail",
 					message: "삭제 권한이 없습니다.",
@@ -63,11 +68,16 @@ const mutations = (t: ObjectDefinitionBlock<"Mutation">) => {
 	t.field("addPosts", {
 		type: "JsendPost",
 		args: {
-			authorEmail: nonNull(stringArg()),
 			title: nonNull(stringArg()),
 			description: stringArg(),
 		},
-		resolve: async (root, { authorEmail, title, description }, { prisma }: NexusContext) => {
+		resolve: async (_, { title, description }, { prisma, user }: NexusContext) => {
+			if (!user) {
+				return {
+					status: "fail",
+					message: "작성할 수 없습니다.",
+				};
+			}
 			return {
 				status: "success",
 				payload: await prisma.post.create({
@@ -76,7 +86,7 @@ const mutations = (t: ObjectDefinitionBlock<"Mutation">) => {
 						description,
 						author: {
 							connect: {
-								email: authorEmail,
+								email: user.email,
 							},
 						},
 					},

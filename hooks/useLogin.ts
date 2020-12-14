@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { JsendSuccess, LoginMutationVar } from "interfaces";
+import { LoginJsendSuccess, LoginMutationVar } from "interfaces";
 
 const loginMutation = gql`
 	mutation Login($email: String!, $password: String!) {
 		login(email: $email, password: $password) {
 			status
 			message
+			token
+			payload {
+				name
+				email
+				id
+			}
 		}
 	}
 `;
@@ -14,7 +20,7 @@ const loginMutation = gql`
 const useLogin = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [sendLogin, { error, data }] = useMutation<{ login: JsendSuccess<{}> }, LoginMutationVar>(loginMutation, {
+	const [sendLogin, { error, data }] = useMutation<{ login: LoginJsendSuccess<{}> }, LoginMutationVar>(loginMutation, {
 		variables: {
 			email,
 			password,

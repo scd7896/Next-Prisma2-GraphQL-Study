@@ -15,9 +15,9 @@ type JsendPostList {
 }
 
 type Mutation {
-  addPosts(authorEmail: String!, description: String, title: String!): JsendPost
+  addPosts(description: String, title: String!): JsendPost
   login(email: String!, password: String!): UserLogin
-  removePosts(authorEmail: String!, id: Int!): JsendPost
+  removePosts(id: Int!): JsendPost
   signUp(email: String!, name: String!, password: String!, passwordCheck: String!): UserLogin
 }
 
