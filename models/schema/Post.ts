@@ -5,13 +5,13 @@ const queries = (t: ObjectDefinitionBlock<"Query">) => {
 	t.field("posts", {
 		type: "JsendPostList",
 		args: {
-			id: intArg({ nullable: false }),
+			offset: nonNull(intArg()),
+			size: nonNull(intArg()),
 		},
-		resolve: async (_, { id }, { prisma }: NexusContext) => {
+		resolve: async (_, { offset, size }, { prisma }: NexusContext) => {
 			const posts = await prisma.post.findMany({
-				where: {
-					id: { gt: id },
-				},
+				skip: offset,
+				take: size,
 				include: {
 					author: {
 						select: {

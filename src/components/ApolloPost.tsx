@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import ApolloPostMutation from "./ApolloPostMutationForm";
-import { JsendSuccess, Post, PostQueryVar } from "interfaces";
+import { NexusGenArgTypes, NexusGenFieldTypes } from "interfaces";
 import { RowDiv } from "./ApolloPost.styles";
 const GET_POSTS = gql`
-	query GET_POSTS($id: Int!) {
-		posts(id: $id) {
+	query Posts($offset: Int!, $size: Int!) {
+		posts(offset: $offset, size: $size) {
 			status
 			payload {
 				id
@@ -22,8 +22,11 @@ const GET_POSTS = gql`
 
 const ApolloPost = () => {
 	const [test, setTest] = useState(1);
-	const { loading, error, data } = useQuery<{ posts: JsendSuccess<Post[]> }, PostQueryVar>(GET_POSTS, {
-		variables: { id: test },
+	const { loading, error, data } = useQuery<
+		{ posts: NexusGenFieldTypes["Query"]["posts"] },
+		NexusGenArgTypes["Query"]["posts"]
+	>(GET_POSTS, {
+		variables: { offset: 1, size: 5 },
 	});
 	if (loading) return <RowDiv>Loading...</RowDiv>;
 	if (error) return <p>error {error.message}</p>;
@@ -39,7 +42,7 @@ const ApolloPost = () => {
 					클릭을 해보자
 				</button>
 
-				{data &&
+				{data?.posts?.payload &&
 					data.posts.payload.map((post) => {
 						return (
 							<RowDiv>

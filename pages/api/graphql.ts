@@ -7,7 +7,12 @@ import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 // const prisma = new PrismaClient({ log: ["query", "info", "warn"] });
 const getUsers = (token: string) => {
-	return jwt.verify(token, "test-secret");
+	try {
+		const user = jwt.verify(token, "test-secret");
+		return user;
+	} catch {
+		return null;
+	}
 };
 
 const prisma = new PrismaClient();
@@ -15,8 +20,8 @@ export const schema = makeSchema({
 	types,
 	plugins: [nexusSchemaPrisma({ experimentalCRUD: true }), declarativeWrappingPlugin()],
 	outputs: {
-		typegen: path.join(process.cwd(), "pages", "api", "nexus-typegen.ts"),
-		schema: path.join(process.cwd(), "pages", "api", "schema.graphql"),
+		typegen: path.join(process.cwd(), "interfaces", "graphql", "nexus-typegen.ts"),
+		schema: path.join(process.cwd(), "interfaces", "graphql", "schema.graphql"),
 	},
 });
 

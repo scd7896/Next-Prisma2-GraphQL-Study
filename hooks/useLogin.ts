@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { LoginJsendSuccess, LoginMutationVar } from "interfaces";
+import { NexusGenArgTypes, NexusGenFieldTypes } from "interfaces";
 
 const loginMutation = gql`
 	mutation Login($email: String!, $password: String!) {
@@ -20,7 +20,10 @@ const loginMutation = gql`
 const useLogin = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [sendLogin, { error, data }] = useMutation<{ login: LoginJsendSuccess<{}> }, LoginMutationVar>(loginMutation, {
+	const [sendLogin, { error, data }] = useMutation<
+		NexusGenFieldTypes["Mutation"]["login"],
+		NexusGenArgTypes["Mutation"]["login"]
+	>(loginMutation, {
 		variables: {
 			email,
 			password,

@@ -211,7 +211,8 @@ export interface NexusGenArgTypes {
   }
   Query: {
     posts: { // args
-      id: number; // Int!
+      offset: number; // Int!
+      size: number; // Int!
     }
   }
 }

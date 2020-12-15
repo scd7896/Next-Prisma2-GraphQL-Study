@@ -41,7 +41,7 @@ type Profile {
 
 type Query {
   getMyData: UserLogin
-  posts(id: Int!): JsendPostList
+  posts(offset: Int!, size: Int!): JsendPostList
 }
 
 type User {
