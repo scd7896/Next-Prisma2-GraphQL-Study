@@ -29,28 +29,27 @@ const ApolloPost = () => {
 		variables: { offset: 1, size: 5 },
 	});
 	if (loading) return <RowDiv>Loading...</RowDiv>;
-	if (error) return <p>error {error.message}</p>;
 
+	if (error) return <></>;
 	return (
 		<div>
-			<p>
-				<button
-					onClick={() => {
-						setTest((prev) => prev + 1);
-					}}
-				>
-					클릭을 해보자
-				</button>
+			<button
+				onClick={() => {
+					setTest((prev) => prev + 1);
+				}}
+			>
+				클릭을 해보자
+			</button>
 
-				{data?.posts?.payload &&
-					data.posts.payload.map((post) => {
-						return (
-							<RowDiv>
-								{post.title}: {post.description}
-							</RowDiv>
-						);
-					})}
-			</p>
+			{data?.posts?.payload &&
+				data.posts.payload.map((post, index) => {
+					return (
+						<RowDiv key={`test=${index}`}>
+							{post?.title}: {post?.description}
+						</RowDiv>
+					);
+				})}
+
 			<ApolloPostMutation />
 		</div>
 	);

@@ -36,23 +36,12 @@ const mutations = (t: ObjectDefinitionBlock<"Mutation">) => {
 		},
 		resolve: async (_, { id }, { prisma, user }: NexusContext) => {
 			if (!user) {
-				return {
-					status: "fail",
-					message: "삭제 권한이 없습니다",
-				};
+				throw new Error("로그인이 되지 않았습니다.");
 			}
 			const target = await prisma.post.findUnique({ where: { id }, include: { author: true } });
-			if (!target)
-				return {
-					status: "fail",
-					message: "해당 포스트는 없습니다.",
-				};
+			if (!target) throw new Error("해당 포스트는 없습니다");
 
-			if (target.author.email !== user.email)
-				return {
-					status: "fail",
-					message: "삭제 권한이 없습니다.",
-				};
+			if (target.author.email !== user.email) throw new Error("삭제 권한이 없습니다.");
 
 			return {
 				status: "success",
@@ -73,25 +62,27 @@ const mutations = (t: ObjectDefinitionBlock<"Mutation">) => {
 		},
 		resolve: async (_, { title, description }, { prisma, user }: NexusContext) => {
 			if (!user) {
-				return {
-					status: "fail",
-					message: "작성할 수 없습니다.",
-				};
+				const error = new Error("작성할 수 없습니다.");
+				throw error;
 			}
-			return {
-				status: "success",
-				payload: await prisma.post.create({
-					data: {
-						title,
-						description,
-						author: {
-							connect: {
-								email: user.email,
+			try {
+				return {
+					status: "success",
+					payload: await prisma.post.create({
+						data: {
+							title,
+							description,
+							author: {
+								connect: {
+									email: user.email,
+								},
 							},
 						},
-					},
-				}),
-			};
+					}),
+				};
+			} catch (err) {
+				throw err;
+			}
 		},
 	});
 };
